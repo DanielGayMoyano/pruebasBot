@@ -1,0 +1,20 @@
+{
+  "name": "pruebas",
+  "version": "1.0.0",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "daniel",
+  "license": "ISC",
+  "description": "bot de pruebas",
+  "dependencies": {
+    "discord.js": "^13.8.0",
+    "dotenv": "^16.0.1",
+    "enmap": "^5.9.0"
+  },
+  "devDependencies": {
+    "nodemon": "^2.0.16"
+  }
+}
