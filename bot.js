@@ -3,8 +3,12 @@
 
         npm install discord.js dotenv
     
-    comando para instalar nodemon (para comodidad al usar node y mejorar el flujo de trabajo) 
+    comando para instalar nodemon (para comodidad al usar node y mejorar el flujo de trabajo)     
 */
+
+//
+//por cada pusheo a github reiniciar el token para que funcione el bot
+//
 
 const config = require("./config/config.json");
 const Discord = require("discord.js");
