@@ -6,7 +6,6 @@
     comando para instalar nodemon (para comodidad al usar node y mejorar el flujo de trabajo) 
 */
 
-
 const config = require("./config/config.json");
 const Discord = require("discord.js");
 const Enmap = require("enmap");
@@ -32,6 +31,7 @@ client.on("guildMemberAdd", async (member) => {
   client.setups.ensure(member.guild.id, {
     welcomeChannel: "",
     welcomeMessage: "",
+    roleDefault:""
   });
 
   try {
@@ -47,14 +47,15 @@ client.on("guildMemberAdd", async (member) => {
   } catch (e) {
     console.log(e);
   }
-  
 });
 
 client.on("messageCreate", async (message) => {
+
   if (message.author.bot || !message.guild || !message.channel) return;
   client.setups.ensure(message.guild.id, {
     welcomeChannel: "",
     welcomeMessage: "",
+    roleDefault:""
   });
 
   const args = message.content.slice(config.prefix.length).trim().split(" ");
@@ -75,34 +76,39 @@ client.on("messageCreate", async (message) => {
       return message.reply(
         `No has especificado un mensaje de bienvenida!\n**Uso** \`${config.prefix}setup-welcome <#CANAL O ID> <MENSAJE DE BIENVENIDA>\``
       );*/
-    let obj = {
-      welcomeChannel: channel.id,
-      welcomeMessage: `Bienvenido a la llorería acompañado por su bot de confianza ${config.name}, {Usuario}`,
-    };
+    let obj;
+    if (args.slice(1).join(" ")) {
+      obj = {
+        welcomeChannel: channel.id,
+        welcomeMessage: args.slice(1).join(" "),
+      };
+    } else {
+      obj = {
+        welcomeChannel: channel.id,
+        welcomeMessage: `Bienvenido {Usuario} aquí podrás llorar acompañado por su bot de confianza ${config.name} `,
+      };
+    }
     client.setups.set(message.guild.id, obj);
     return message.reply(
       `Se ha configurado correctamente el canal de bienvenida\n**Canal** ${channel}\n**Mensaje de bienvenida:** ${obj.welcomeMessage}`
     );
   }
-
-  if (command === "apagar") {
-    console.log("el bot se esta apagando");
-  } else if (command === "usuario") {
-    let user = message.member.user.username;
-    message.reply(
-      "Bienvenido a la llorería acompañado por su bot de confianza " +
-        name +
-        ", " +
-        user
-    );
-    //let user = message.member.user.tag;
-    //message.reply("El usuario " + user + " se ha conectado");
-  } else if (command === "server") {
+  if (command === "setup-role-default") {
+    const role =
+      message.guild.roles.cache.get(args[0]) || message.mentions.roles.first();
+    if (!role) {
+      return message.reply(
+        `El rol que se ha mencionado no existe!\n**Uso** \`${config.prefix}setup-role-default <role>\``
+      );
+    }
+    
+  }
+  if (command === "server") {
     //const aux=client.guilds.cache.map(g=>g.name).join(" ");
     //const server=client.guilds.cache.map(aux).join(" ");
     const server = message.guild.name;
     message.reply(
-      "El nombre de los servers donde esta " + name + " son " + server
+      "El nombre de los servers donde esta "  + " son " + server
     );
   }
 });
